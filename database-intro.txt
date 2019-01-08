@@ -1,7 +1,46 @@
 1. What data types do each of these values represent?
 
-"A Clockwork Orange": string
-42: number
-09/02/1945: number
+"A Clockwork Orange": string (char)
+42: integer 
+09/02/1945: date
 98.7: float
-$15.99
+$15.99: decimal 
+
+2. Explain when a database would be used. Explain when a text file would be used.
+A: text file vs. database
+When dealing with a big amount of data, text file does not work properly, because of overwriting and locking issues. Database does not have this problem, so it is suitable for this use case. However since database is not readable by humans, text files are better when requiring human readability.
+
+3. Describe one difference between SQL and other programming languages.
+A: SQL is not a programming language. It is a type of standard commands that store, calculate, manipulate, or retrieve or change data, in order to let you look at any part of the data you want. But if you want to do something TO your data, then you need programming languages to make it happen. 
+
+4. In your own words, explain how the pieces of a database system fit together at a high level.
+A: A database can be made up of tables, with columns, rows and values - like a grid. Columns are sort of labels for the data, or data category, Each row is one entry and each column contains a specific type of data as indicated by its label. 
+
+5. Explain the meaning of table, row, column, and value.
+A: Data is saved in a table structure, with columns that define what the data represent, and rows that make up a complete conceptual unit. The value is the piece of info that the column name describes. 
+
+6. List three data types that can be used in a table.
+7. Given this payments table, provide an English description of the following queries and include their results:
+
+	SELECT date, amount
+	FROM payments;
+A: Retrieve the date and amount values from the payments table. 
+Date		Amount	
+5/1/2016	1500.00	
+5/10/2016	37.00	
+5/15/2016	124.93	
+5/23/2016	54.72	
+
+	SELECT amount
+     	FROM payments
+     	WHERE amount > 500;
+A: Retrieve the amount value from payments table if the amount is greater than 500.
+Amount	
+1500.00	
+
+	SELECT *
+     	FROM payments
+     	WHERE payee = 'Mega Foods'; 
+A: Retrieve all values from payments table if the payee equals 'Mega Foods'
+Date		Payee		Amount	Memo
+5/15/2016	Mega Foods	124.93	Groceries
