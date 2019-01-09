@@ -20,6 +20,8 @@ A: A database can be made up of tables, with columns, rows and values - like a g
 A: Data is saved in a table structure, with columns that define what the data represent, and rows that make up a complete conceptual unit. The value is the piece of info that the column name describes. 
 
 6. List three data types that can be used in a table.
+A: Integers, strings, dates
+
 7. Given this payments table, provide an English description of the following queries and include their results:
 
 	SELECT date, amount
@@ -48,20 +50,18 @@ Date		Payee		Amount	Memo
 8. Given this users table, write SQL queries using the following criteria and include the output:
 
 The email and sign-up date for the user named DeAndre Data.
-A: 
-SELECT email, signup
-FROM users
-WHERE name = DeAndre Data; 
-
 The user ID for the user with email 'aleesia.algorithm@uw.edu'.
-A: 
-SELECT userid
-FROM users
-WHERE email = 'aleesia.algorithm@uw.edu';
-
 All the columns for the user ID equal to 4.
-A: 
+
+SELECT email, signup
+    FROM users 
+    WHERE user = 'DeAndre Data';
+
+SELECT userid 
+    FROM users 
+    WHERE email = 'aleesia.algorithm@uw.edu';
+
 SELECT *
-FROM users
-WHERE userid = 4;
+    FROM users 
+    WHERE userid = 4;
 
