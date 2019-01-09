@@ -4,7 +4,7 @@
 42: integer 
 09/02/1945: date
 98.7: float
-$15.99: decimal 
+$15.99: money/smallmoney 
 
 2. Explain when a database would be used. Explain when a text file would be used.
 A: text file vs. database
@@ -44,3 +44,24 @@ Amount
 A: Retrieve all values from payments table if the payee equals 'Mega Foods'
 Date		Payee		Amount	Memo
 5/15/2016	Mega Foods	124.93	Groceries
+
+8. Given this users table, write SQL queries using the following criteria and include the output:
+
+The email and sign-up date for the user named DeAndre Data.
+A: 
+SELECT email, signup
+FROM users
+WHERE name = DeAndre Data; 
+
+The user ID for the user with email 'aleesia.algorithm@uw.edu'.
+A: 
+SELECT userid
+FROM users
+WHERE email = 'aleesia.algorithm@uw.edu';
+
+All the columns for the user ID equal to 4.
+A: 
+SELECT *
+FROM users
+WHERE userid = 4;
+
