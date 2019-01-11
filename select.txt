@@ -1,0 +1,162 @@
+####Exercises
+Answer the following questions and submit the responses.
+
+1. Write out a generic SELECT statement.
+A: 
+    SELECT <column1, column2, ... *>
+    FROM <table1, table2 ...>
+    <optional: WHERE <condition>>
+
+2. Create a fun way to remember the order of operations in a SELECT statement, such as a mnemonic.
+A: 
+Select From Where
+SFW: San Francisco Woman = me 
+
+3. Given this dogs table, write queries to select the following pieces of data:
+
+Intake teams typically guess the breed of shelter dogs, so the breed column may have multiple words (for example, "Labrador Collie mix").
+
+- Display the name, gender, and age of all dogs that are part Labrador.
+
+    SELECT name, gender, age
+    FROM dogs
+    WHERE breed LIKE '%labrador%';
+
+- Display the ids of all dogs that are under 1 year old.
+    
+    SELECT id
+    FROM dogs
+    WHERE age < 1;
+
+- Display the name and age of all dogs that are female and over 35lbs.
+
+    SELECT name, age
+    FROM dogs
+    WHERE sex='f'
+    AND weight > 35;
+
+- Display all of the information about all dogs that are not Shepherd mixes.
+
+    SELECT *
+    FROM dogs
+    WHERE breed NOT LIKE '%shepherd%';
+
+- Display the id, age, weight, and breed of all dogs that are either over 60lbs or Great Danes.
+
+    SELECT id, age, weight, breed
+    FROM dogs
+    WHERE weight > 60
+    OR breed = 'great danes';
+
+4. Given this cats table, what records are returned from these queries?
+
+- SELECT name, adoption_date FROM cats;
+A: Display the name and adoption date of the cats included in the cats table.
+
+- SELECT name, age FROM cats;
+A: Display the name and age of all the cats included in the cats table.
+
+5. From the cats table, write queries to select the following pieces of data.
+- Display all the information about all of the available cats.
+
+    SELECT *
+    FROM cats;
+
+- Display the name and sex of all cats who are 7 years old.
+
+    SELECT name, sex
+    FROM cats
+    WHERE age = 7;
+
+- Find all of the names of the cats, so you don’t choose duplicate names for new cats.
+
+    SELECT name
+    FROM cats;
+
+6. List each comparison operator and explain when you would use it. Include a real world example for each.
+
+< : less than
+Example: You're looking for the classes that are for age under 5.
+
+  SELECT *
+  FROM classes 
+  WHERE age < 5;
+
+> : greater than
+Example: You're looking for the adult classes.
+
+  SELECT * 
+  FROM classes 
+  WHERE age > 18;
+
+<= : less than and equal to
+Example: You're looking for classes that are small. Students 5 or under. 
+
+  SELECT *
+  FROM classes 
+  WHERE #ofstudents <= 5;
+
+>= : greater than and equal to
+Example: You're looking for classes that are big. Students 20 or more.
+
+  SELECT * 
+  FROM classes 
+  WHERE #ofstudents >= 20;
+
+= : equal to
+Example: You're looking for classes that Mr. Green teaches.
+
+  SELECT *
+  FROM classes
+  WHERE instructor='Mr. Green';
+
+!= (<>) : not equal to
+Example: You're looking for classes that are not online.
+
+  SELECT * 
+  FROM classes
+  WHERE format != 'online';
+
+TRUE/FALSE : boolean operator
+Example: You're looking for classes that are taking place outdoors. 
+
+  SELECT *
+  FROM classes 
+  WHERE outdoor? = TRUE; 
+
+LIKE: when you only include part of the info
+Example: You're looking for swim classes.
+
+  SELECT name
+  FROM classes
+  WHERE name LIKE '%swim%'; 
+
+AND : two conditions should be met
+Example: You're looking for classes that are taking place outdoors and
+that gives you a certificate at the end. 
+
+  SELECT *
+  FROM classes 
+  WHERE outdoor? = TRUE 
+  AND certificate? = TRUE;
+
+OR: one of the conditions should be met
+Example: You're looking for classes that are online or 
+that the registration fee is less than $100. 
+
+  SELECT *
+  FROM classes
+  WHERE format='online' 
+  OR tuition < 100; 
+
+
+7. From the cats table, what data is returned from these queries?
+- SELECT name FROM cats WHERE gender = ‘F’;
+A: The names of the cats whose sex is female.
+
+- SELECT name FROM cats WHERE age <> 3;
+A: The names of the cats whose age is not 3 years old. 
+
+- SELECT ID FROM cats WHERE name != ‘Mushi’ AND gender = ‘M’;
+A: The Ids of the cats whose name is not 'Mushi' and sex is male. 
+
