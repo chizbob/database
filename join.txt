@@ -1,0 +1,187 @@
+####Exercise
+1. How do you find related data held in two separate data tables?
+A: By using the common column name (foreign key/primary key) as well as its values between two different tables like this: 
+
+	SELECT column names you want to retrieve 
+	FROM tableA
+	JOIM tableB
+	ON tableA.foreignkey = tableB.primarykey;
+
+2. Explain, in your own words, the difference between an INNER JOIN, LEFT OUTER JOIN, and RIGHT OUTER JOIN. Give a real-world example for each.
+A: Taking my 2 tables as examples: 
+
+kids table 
+first_name	last_name 	birtyday 	class_id	favorite_treat
+Peppa		Pig		Jan-01-2013	09		Cotton Candy
+Danny		Dog		May-08-2013	06		Chocolate
+Rebecca		Rabbit 		Jun-23-2013	10		Ice cream
+Zoe		Zebra		Apr-01-2013	(null)		null
+
+class table 
+class_id	class_name	teacher_name	floor
+09		Canary		Ms. Coco	2
+06		Peacock		Mr. Pole	1
+10		Eagle		Ms. Edwin	3
+12		Chikadee	Ms. Chom	2
+13		Fowl		Mr. Fun		1
+
+INNER JOIN: JOIN defaults to INNER JOIN. It only shows the corresponding results of the primary key. A primary key refers to a foreign key in another table, which plays as a link/bridge between 2 different tables.
+
+	SELECT kids.first_name, kids.last_name, class.class_name
+	FROM kids 
+	JOIN class
+	ON kids.class_id = class.class_id;
+
+Results:
+
+	first_name	last_name	class_name
+	Peppa 		Pig		Canary
+	Danny		Dog		Peacock
+	Rebecca		Rabbit		Eagle
+
+LEFT OUTER: This retrieves the corresponding results of the primary key + all rows in the left table even if there's no value to it. 
+
+	SELECT kids.first_name, kids.last_name, class.class_name
+	FROM kids 
+	LEFT JOIN class
+	ON kids.class_id = class.class_id;
+
+Results:
+
+	first_name	last_name	class_name
+	Peppa 		Pig		Canary
+	Danny		Dog		Peacock
+	Rebecca		Rabbit		Eagle
+	Zoe		Zebra		(null)
+
+RIGHT OUTER: Flip side of the LEFT OUTER JOIN. This retrieves the corresponding results of the primary key + all rows in the right table's corresponding columns even if there's no value to it. 
+
+
+	SELECT kids.first_name, kids.last_name, class.class_name
+	FROM kids 
+	RIGHT JOIN class
+	ON kids.class_id = class.class_id;
+
+Results:
+
+	first_name	last_name	class_name
+	Peppa 		Pig		Canary
+	Danny		Dog		Peacock
+	Rebecca		Rabbit		Eagle
+	(null)		(null)		Chikadee
+	(null)		(null)		Fowl
+
+3. Define primary key and foreign key. Give a real-world example for each.
+A: A primary key and foreign key actually refers to the common data between 2 different tables. 
+For example, the 2 tables above, there is this bridge area between them, which is the class id. For kids table, the class_id is the foreign key, when the exact same thing is the primary key in the class table. 
+
+4. Define aliasing. 
+A: You don't need to type the full table names every time. 
+You can give it a sort of nickname by typing like this: 
+
+	SELECT first_name, class_name
+	FROM kids k 
+	JOIN class c 
+	ON k.class_id = c.class_id;
+
+5. Change this query so that you are using aliasing:
+	SELECT professor.name, compensation.salary,
+	compensation.vacation_days FROM professor JOIN
+	compensation ON professor.id =
+	compensation.professor_id;
+
+->	SELECT p.name, c.salary, c.vacation_days 
+    	FROM professor AS p 
+    	JOIN compensation AS c 
+    	ON p.id = c.professor_id;
+
+6. Why would you use a NATURAL JOIN? Give a real-world example.
+A: NATURAL is a shorthand form of USING. 
+It forms a USING list with all the shared columns between the tables. 
+These columns appear only once in the output table.
+Good thing about the NATURAL KOIN is that we don't need to create a list of shared columns. Taking the previous tables as an example: 
+
+	SELECT * 
+	FROM kids 
+	NATURAL JOIN class;
+
+7. Using this Employee schema and data, write queries to find the following information:
+- List all employees and all shifts.
+A: 
+    	SELECT employees.name, shifts.date, shifts.start_time, shifts.end_time
+    	FROM scheduled_shifts 
+    	JOIN employees 
+	ON scheduled_shifts.employee_id = employees.id
+    	JOIN shifts 
+	ON scheduled_shifts.shift_id = shifts.id;  
+
+8. Using this Adoption schema and data, please write queries to retrieve the following information and include the results:
+
+- Create a list of all volunteers. If the volunteer is fostering a dog, include each dog as well.
+
+	SELECT volunteers.first_name, volunteers.last_name, dogs.name 
+    	FROM volunteers 
+    	LEFT OUTER JOIN dogs  
+    	ON volunteers.foster_dog_id=dogs.id;
+
+- The cat's name, adopter's name, and adopted date for each cat adopted within the past month to be displayed as part of the "Happy Tail" social media promotion which posts recent successful adoptions.
+
+    	SELECT cats.name, adopters.first_name, adopters.last_name, cats.adoption_date
+    	FROM cat_adoptions  
+    	JOIN cats 
+	ON cat_adoptions.cat_id=cats.id  
+    	JOIN adopters 
+	ON cat_adoptions.adopter_id=adopters.id
+    	WHERE cat_adoptions.date >= DATEADD(mm,DATEDIFF(mm,0,GETDATE()),0);
+
+- Create a list of adopters who have not yet chosen a dog to adopt.
+
+	SELECT adopters.first_name, adopters.last_name 
+    	FROM adopters
+    	LEFT OUTER JOIN dog_adoptions
+    	ON adopters.id=dog_adoptions.adopter_id
+    	WHERE dog_adoptions.adopter_id = NULL;
+
+- Lists of all cats and all dogs who have not been adopted.
+
+    	SELECT cats.name, dogs.name 
+    	FROM dogs, cats 
+    	LEFT OUTER JOIN dog_adoptions 
+	ON dog_adoptions.dog_id = dogs.id 
+    	LEFT OUTER JOIN cat_adoptions 
+	ON cat_adoptions.cat_id = cats.id
+    	WHERE dog_adoptions.dog_id = NULL 
+	AND cat_adoptions.cat_id = NULL; 
+
+- The name of the person who adopted Rosco.
+
+    	SELECT adopters.first_name, adopters.last_name 
+    	FROM dog_adoptions 
+    	JOIN adopters 
+	ON dog_adoptions.adopter_id = adopters.id
+    	JOIN dogs 
+	ON dog_adoptions.dog_id = dogs.id 
+    	WHERE dogs.name = 'Rosco';
+
+9. Using this Library schema and data, write queries applying the following scenarios and include the results:
+
+- To determine if the library should buy more copies of a given book, please provide the names and position, in order, of all of the patrons with a hold (request for a book with all copies checked out) on "Advanced Potion-Making".
+
+	SELECT patrons.name, holds.rank 
+    	FROM holds 
+    	JOIN patrons 
+	ON holds.patron_id = patrons.id 
+    	JOIN books 
+	ON holds.isbn = books.isbn 
+    	WHERE books.title = 'Advanced Potion-Making'
+    	ORDER BY holds.rank ASC; 
+
+- List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
+
+	SELECT patrons.name, books.title 
+   	FROM transactions
+    	RIGHT OUTER JOIN patrons 
+	ON transactions.patron_id = patrons.id 
+    	JOIN books 
+	ON transactions.isbn = books.isbn;
+    	WHERE transactions.checked_in_date = NULL;
