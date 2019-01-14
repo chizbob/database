@@ -15,7 +15,7 @@ first_name	last_name 	birtyday 	class_id	favorite_treat
 Peppa		Pig		Jan-01-2013	09		Cotton Candy
 Danny		Dog		May-08-2013	06		Chocolate
 Rebecca		Rabbit 		Jun-23-2013	10		Ice cream
-Zoe		Zebra		Apr-01-2013	(null)		null
+Zoe		Zebra		Apr-01-2013	(null)		(null)
 
 class table 
 class_id	class_name	teacher_name	floor
@@ -140,7 +140,7 @@ A:
     	FROM adopters
     	LEFT OUTER JOIN dog_adoptions
     	ON adopters.id=dog_adoptions.adopter_id
-    	WHERE dog_adoptions.adopter_id = NULL;
+    	WHERE dog_adoptions.adopter_id IS NULL;
 
 - Lists of all cats and all dogs who have not been adopted.
 
@@ -150,8 +150,8 @@ A:
 	ON dog_adoptions.dog_id = dogs.id 
     	LEFT OUTER JOIN cat_adoptions 
 	ON cat_adoptions.cat_id = cats.id
-    	WHERE dog_adoptions.dog_id = NULL 
-	AND cat_adoptions.cat_id = NULL; 
+    	WHERE dog_adoptions.dog_id IS NULL 
+	AND cat_adoptions.cat_id IS NULL; 
 
 - The name of the person who adopted Rosco.
 
@@ -184,4 +184,4 @@ A:
 	ON transactions.patron_id = patrons.id 
     	JOIN books 
 	ON transactions.isbn = books.isbn;
-    	WHERE transactions.checked_in_date = NULL;
+    	WHERE transactions.checked_in_date IS NULL;
