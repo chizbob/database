@@ -109,11 +109,9 @@ Good thing about the NATURAL KOIN is that we don't need to create a list of shar
 - List all employees and all shifts.
 A: 
     	SELECT employees.name, shifts.date, shifts.start_time, shifts.end_time
-    	FROM scheduled_shifts 
-    	JOIN employees 
-	ON scheduled_shifts.employee_id = employees.id
-    	JOIN shifts 
-	ON scheduled_shifts.shift_id = shifts.id;  
+	FROM shifts 
+	JOIN employees 
+	ON shifts.id = employees.id;  
 
 8. Using this Adoption schema and data, please write queries to retrieve the following information and include the results:
 
@@ -126,13 +124,13 @@ A:
 
 - The cat's name, adopter's name, and adopted date for each cat adopted within the past month to be displayed as part of the "Happy Tail" social media promotion which posts recent successful adoptions.
 
-    	SELECT cats.name, adopters.first_name, adopters.last_name, cats.adoption_date
-    	FROM cat_adoptions  
-    	JOIN cats 
-	ON cat_adoptions.cat_id=cats.id  
-    	JOIN adopters 
-	ON cat_adoptions.adopter_id=adopters.id
-    	WHERE cat_adoptions.date >= DATEADD(mm,DATEDIFF(mm,0,GETDATE()),0);
+	SELECT cats.name AS cat_name, adopters.first_name AS adopter_name, cat_adoptions.date AS adoption_date
+	FROM cats
+	JOIN cat_adoptions 
+	ON cats.id = cat_adoptions.cat_id
+	JOIN adopters 
+	ON cat_adoptions.adopter_id = adopters.id
+	WHERE cat_adoptions.date >= (CURRENT_DATE - INTERVAL '30 DAYS');
 
 - Create a list of adopters who have not yet chosen a dog to adopt.
 
@@ -144,14 +142,17 @@ A:
 
 - Lists of all cats and all dogs who have not been adopted.
 
-    	SELECT cats.name, dogs.name 
-    	FROM dogs, cats 
-    	LEFT OUTER JOIN dog_adoptions 
-	ON dog_adoptions.dog_id = dogs.id 
-    	LEFT OUTER JOIN cat_adoptions 
-	ON cat_adoptions.cat_id = cats.id
-    	WHERE dog_adoptions.dog_id IS NULL 
-	AND cat_adoptions.cat_id IS NULL; 
+	SELECT dogs.name
+	FROM dogs
+	LEFT OUTER JOIN dog_adoptions
+	ON dogs.id = dog_adoptions.dog_id
+	WHERE dog_adoptions.dog_id IS NULL
+	UNION ALL
+	SELECT cats.name
+	FROM cats
+	LEFT OUTER JOIN cat_adoptions
+	ON cats.id = cat_adoptions.cat_id
+	WHERE cat_adoptions.cat_id IS NULL;
 
 - The name of the person who adopted Rosco.
 
@@ -174,7 +175,7 @@ A:
     	JOIN books 
 	ON holds.isbn = books.isbn 
     	WHERE books.title = 'Advanced Potion-Making'
-    	ORDER BY holds.rank ASC; 
+    	ORDER BY holds.rank ASC;
 
 - List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
 
@@ -183,5 +184,5 @@ A:
     	RIGHT OUTER JOIN patrons 
 	ON transactions.patron_id = patrons.id 
     	JOIN books 
-	ON transactions.isbn = books.isbn;
+	ON transactions.isbn = books.isbn
     	WHERE transactions.checked_in_date IS NULL;
